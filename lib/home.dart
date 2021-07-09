@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:store/hyderabad.dart';
-import 'package:store/grocery.dart';
-import 'package:store/jaipur.dart';
-import 'package:store/tshirt.dart';
+import 'package:store/filters/hyderabad.dart';
+import 'package:store/filters/grocery.dart';
+import 'package:store/filters/jaipur.dart';
+import 'package:store/filters/tshirt.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class VideoScreen extends StatefulWidget {
@@ -14,7 +14,11 @@ class VideoScreen extends StatefulWidget {
 }
 
 class VideoScreenState extends State<VideoScreen> {
+
   VideoScreenState();
+    
+    String selectedFilter;
+  
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,76 +31,50 @@ class VideoScreenState extends State<VideoScreen> {
       body: 
       Column(
         children: [
-          Row(
-            children: [
-              ElevatedButton(style: ElevatedButton.styleFrom(
-                  
-                  primary: Colors.white54, //background color of button
-                 
-                  elevation: 3, //elevation of button
-                 
-                  padding: EdgeInsets.all(20) //content padding inside button
-                ),
-               
-                onPressed: () {  
-                    Navigator.push(context,MaterialPageRoute(builder: (context) => Jaipur(),),);
-                },
-                child: Text("Jaipur") 
-              ),
-               SizedBox(
-              height: 5,
-              width:10,
-            ),
-               ElevatedButton(style: ElevatedButton.styleFrom(
-                  
-                  primary: Colors.white54, //background color of button
-                 
-                  elevation: 3, //elevation of button
-                 
-                  padding: EdgeInsets.all(20) //content padding inside button
-                ),
-               
-                onPressed: () {  
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => Hyderabad(),),);
-                },
-                child: Text("Hyderabad") 
-              ),
-               SizedBox(
-              height: 5,
-              width:10,
-            ),
-              ElevatedButton(style: ElevatedButton.styleFrom(
-                  
-                  primary: Colors.white54, //background color of button
-                 
-                  elevation: 3, //elevation of button
-                 
-                  padding: EdgeInsets.all(20) //content padding inside button
-                ),
-               
-                onPressed: () {   Navigator.push(context,MaterialPageRoute(builder: (context) => Grocery(),),);},
-                child: Text("grocery") 
-              ),
-               SizedBox(
-              height: 5,
-              width:10,
-            ),
-              ElevatedButton(style: ElevatedButton.styleFrom(
-                  
-                  primary: Colors.white54, //background color of button
-                 
-                  elevation: 3, //elevation of button
-                 
-                  padding: EdgeInsets.all(20) //content padding inside button
-                ),
-               
-                onPressed: () {  Navigator.push(context,MaterialPageRoute(builder: (context) => Tshirt(),),);
-                 },
-                child: Text("Tshirt")
-              ), 
-            ],
+          DropdownButton<String>(
+            value:selectedFilter,
+            items: _dropDownItem(),
+            style: TextStyle(color:Colors.white),
+            iconEnabledColor: Colors.black,
+            onChanged: (value){
+               selectedFilter = value;
+               switch(value){
+                 case "hyderabad":
+                 Navigator.push(
+                   context,
+                   MaterialPageRoute(builder: (context)=> Hyderabad()),
+                 );
+                 break;
+                 case "jaipur":
+                  Navigator.push(
+                   context,
+                   MaterialPageRoute(builder: (context)=> Jaipur()),
+                 );
+                 break;
+                 case "grocery":
+                  Navigator.push(
+                   context,
+                   MaterialPageRoute(builder: (context)=> Grocery()),
+                 );
+                 break;
+                 case "tshirt":
+                  Navigator.push(
+                   context,
+                   MaterialPageRoute(builder: (context)=> Tshirt()),
+                 );
+                 break;
+
+
+
+
+               }
+              },
+              hint: Text("select filter",
+              style: TextStyle(color: Colors.white),),
+               ),
+        
+             
             
-          ),
           Flexible(
           child: StreamBuilder(
               stream: FirebaseFirestore.instance.collection('shop').snapshots(),
@@ -119,7 +97,7 @@ class VideoScreenState extends State<VideoScreen> {
                         mute: false,
                         disableDragSeek: false,
                         loop: false,
-                        isLive: false,
+                        isLive: true,
                         forceHD: false,
                       ),
                     );
@@ -132,6 +110,7 @@ class VideoScreenState extends State<VideoScreen> {
                             Padding(
                               padding: EdgeInsets.only(top: 20, bottom: 5,),
                               child: Text(document['store'],
+                              style: TextStyle (color: Colors.white),
                              
                               ),
                              
@@ -152,6 +131,25 @@ class VideoScreenState extends State<VideoScreen> {
         ],
       ),    );
   }
+  List<DropdownMenuItem<String>> _dropDownItem() {
+              List<String> filters= ["hyderabad","jaipur","grocery","tshirt"];
+              return filters.map(
+                (value) =>
+                DropdownMenuItem(
+                  value: value,
+                  child: Text(value,
+                 style: TextStyle(color:Colors.grey[800]), ),
+                  
+                  
+                  
+              )
+              ).toList();
+            }
+          
+        
 }
+
+
+
 
 
