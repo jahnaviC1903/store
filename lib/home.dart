@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:store/filters/hyderabad.dart';
-import 'package:store/filters/grocery.dart';
-import 'package:store/filters/jaipur.dart';
-import 'package:store/filters/tshirt.dart';
+import 'package:store/add.dart';
+import 'package:store/filter.dart';
+
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class VideoScreen extends StatefulWidget {
   VideoScreen();
@@ -14,8 +14,10 @@ class VideoScreen extends StatefulWidget {
 }
 
 class VideoScreenState extends State<VideoScreen> {
+  var title;
 
-  VideoScreenState();
+
+ VideoScreenState();
     
     String selectedFilter;
   
@@ -24,14 +26,53 @@ class VideoScreenState extends State<VideoScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[900],
        appBar: AppBar(
-            title:Text("Stores"), 
-            backgroundColor: Colors.cyan[900], //background color of app bar
+         leading: IconButton(
+            icon: Icon(FontAwesomeIcons.home, color: Colors.white,),
+            onPressed: () {
+               Navigator.pop(context);
+            }),
+
+            title:Text("All Stores"), 
+            backgroundColor: Colors.cyan[900], 
+            actions: [
+              Theme(
+              data: Theme.of(context).copyWith(
+                dividerColor: Colors.white38,
+                iconTheme: IconThemeData(color: Colors.black),
+                
+                textTheme: TextTheme().apply(bodyColor: Colors.black),
+          
+              ),
+              child: PopupMenuButton<int>(
+                color: Colors.grey[850],
+                onSelected: (item)=> onSelected(context,item),
+                itemBuilder: (context) =>[
+                  PopupMenuItem<int>(
+                    value: 0,
+                    child: Row(
+                      children:[
+                        Icon(Icons.sort ,color:Colors.white),
+                        Text(' Filters'),
+                        ],),  ),
+                  PopupMenuDivider(),
+                  PopupMenuItem<int>(
+                    value: 1,
+                    child: Row(
+                      children:[
+                        Icon(Icons.add ,color:Colors.white),
+                        Text(' Add Store'),
+                        ],),
+                  ),
+
+                ],
+                        ),          ),  ],
         ),
       floatingActionButton: null,
       body: 
+      
       Column(
         children: [
-          DropdownButton<String>(
+        /*  DropdownButton<String>(
             value:selectedFilter,
             items: _dropDownItem(),
             style: TextStyle(color:Colors.white),
@@ -45,13 +86,13 @@ class VideoScreenState extends State<VideoScreen> {
                    MaterialPageRoute(builder: (context)=> Hyderabad()),
                  );
                  break;
-                 case "jaipur":
+                 /*case "jaipur":
                   Navigator.push(
                    context,
-                   MaterialPageRoute(builder: (context)=> Jaipur()),
+                   MaterialPageRoute(builder: (context)=> Jaipur(selectedValue: '',)),
                  );
                  break;
-                 case "grocery":
+                */ case "grocery":
                   Navigator.push(
                    context,
                    MaterialPageRoute(builder: (context)=> Grocery()),
@@ -71,7 +112,7 @@ class VideoScreenState extends State<VideoScreen> {
               },
               hint: Text("select filter",
               style: TextStyle(color: Colors.white),),
-               ),
+               ),*/
         
              
             
@@ -131,7 +172,7 @@ class VideoScreenState extends State<VideoScreen> {
         ],
       ),    );
   }
-  List<DropdownMenuItem<String>> _dropDownItem() {
+  /*List<DropdownMenuItem<String>> _dropDownItem() {
               List<String> filters= ["hyderabad","jaipur","grocery","tshirt"];
               return filters.map(
                 (value) =>
@@ -144,8 +185,23 @@ class VideoScreenState extends State<VideoScreen> {
                   
               )
               ).toList();
-            }
+            } */
+
+    void onSelected(BuildContext context, int item) {
+    switch (item) {
+      case 0:
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => Filter()),
+        );
+        break;
+      case 1:
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => AddPage()),
           
+        );
+        
+    }
+    }
         
 }
 

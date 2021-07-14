@@ -2,26 +2,49 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
+class Applied extends StatefulWidget {
+  
+final String selectedLocation;
+final String selectedProduct;
+final String selectedPrice;
+final String selectedTime;
+final String selectedRate;
 
-class Tshirt extends StatefulWidget {
-  Tshirt();
+
+
+
+ Applied({Key key, @required this.selectedLocation,@required this.selectedProduct,@required this.selectedPrice,@required this.selectedTime,@required this.selectedRate}) : super(key: key);
+
 
   @override
-  _TshirtState createState() => _TshirtState();
+  _AppliedState createState() => new _AppliedState(selectedLocation,selectedProduct,selectedPrice,selectedTime,selectedRate);
 }
 
-class _TshirtState extends State<Tshirt> {
-  _TshirtState();
-   Widget build(BuildContext context) {
+class _AppliedState extends State<Applied> {
+ 
+  String selectedLocation;
+  String selectedProduct;
+  String selectedPrice;
+  String selectedTime;
+  String selectedRate;
+  
+
+  
+
+ _AppliedState(this.selectedLocation,this.selectedProduct,this.selectedPrice,this.selectedTime,this.selectedRate);
+
+  Widget build(BuildContext context) {
     return Scaffold(
        backgroundColor: Colors.grey[900],
       appBar: AppBar(
-            title:Text("Tshirt"), 
+            title:Text("Filters Applied"), 
             backgroundColor: Colors.cyan[900], //background color of app bar
         ),
       floatingActionButton: null,
       body: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('shop').where('product', isEqualTo: 'Tshirt').snapshots(),
+          stream: FirebaseFirestore.instance.collection('shop').where('location', isEqualTo: '$selectedLocation' )
+         .where('product', isEqualTo: '$selectedProduct')
+          .where('price', isEqualTo: '$selectedPrice').snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
@@ -70,6 +93,3 @@ class _TshirtState extends State<Tshirt> {
     );
   }
 }
-
-
- 

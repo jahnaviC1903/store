@@ -6,6 +6,7 @@ import 'home.dart';
 
 
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
    
@@ -65,7 +66,7 @@ void main() async {
               style: ElevatedButton.styleFrom(
                   
                   primary: Colors.white54, //background color of button
-                  side: BorderSide(width:3, color:Colors.grey[200]), //border width and color
+                  side: BorderSide(width:3,color:Colors.grey[200]), //border width and color
                   elevation: 3, //elevation of button
                   shape: RoundedRectangleBorder( //to set border radius to button
                       borderRadius: BorderRadius.circular(30)
