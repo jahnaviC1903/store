@@ -405,22 +405,5 @@ for(int i=0;i< _location.length;i++){
 }
 
 
-class SecondRoute extends StatelessWidget {
-  final String selectedValue;
 
-  SecondRoute({this.selectedValue});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("$selectedValue"),
-        ),
-        body: Center(child: Text("$selectedValue")));
-  }
-
-
-
-
-}
 
