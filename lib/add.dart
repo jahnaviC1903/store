@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 
 
@@ -15,6 +16,22 @@ class _AddPageState extends State<AddPage> {
     TextEditingController _addLocation = TextEditingController();
     TextEditingController _addPrice = TextEditingController();
     TextEditingController _addProduct = TextEditingController();
+    var locationMessage = "";
+
+    void getCurrentLocation() async{
+      var position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      var lastPosition = await Geolocator().getLastKnownPosition();
+      print(lastPosition);
+      var lat = position.latitude;
+      var long = position.longitude;
+      print("$lat, $long");
+      
+
+      setState(() {
+        locationMessage = "Latitude : $lat , Longitude : $long";
+
+      } );   }
 
    CollectionReference linkRef;
   List<String> videoID = [];
@@ -68,6 +85,10 @@ class _AddPageState extends State<AddPage> {
                   decoration: InputDecoration(
                       labelText: 'Price',
                       ),),
+                    Text("Position : $locationMessage"),
+                    ElevatedButton(
+                      onPressed:() {getCurrentLocation();},
+                    child: Text("current location",)),
                        ElevatedButton(
                      onPressed:(){
                       _addItemFuntion();
